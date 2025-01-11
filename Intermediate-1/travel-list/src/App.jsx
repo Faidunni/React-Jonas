@@ -19,8 +19,8 @@ function App() {
   // how to actaully do it
 
   // add item
-  function handleAddItem(item) {
-    setItem((items) => [...items, item]);
+  function handleAddItem(itemDetails) {
+    setItem((itemsDetails) => [...itemsDetails, itemDetails]);
     // setNumItems((num) => num + 1);
   }
 
