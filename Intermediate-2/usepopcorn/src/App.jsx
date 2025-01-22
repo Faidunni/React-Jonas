@@ -54,12 +54,12 @@ const average = (arr) =>
 const KEY = "f84fc31d";
 
 export default function App() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("inception");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const tempQuery = "harry potter";
+  const [selectedId, setSelectedId] = useState("tt4244162");
 
   // useEffect(function () {
   //   fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=harry potter`)
@@ -67,28 +67,37 @@ export default function App() {
   //     .then((data) => setMovies(data.Search));
   // }, []);
 
-  useEffect(function () {
-    console.log("A");
-  }, []);
+  // useEffect(function () {
+  //   console.log("After initial render");
+  // }, []);
 
-  useEffect(function () {
-    console.log("B");
-  });
+  // useEffect(function () {
+  //   console.log("After every render");
+  // });
 
-  console.log("C");
+  // console.log("During render");
+
+  // useEffect(
+  //   function () {
+  //     console.log("D");
+  //   },
+  //   [query]
+  // );
 
   // fetch movie data
   useEffect(() => {
     async function fetchMovies() {
       try {
         setIsLoading(true);
+        setError("");
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${tempQuery}`
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
         );
 
         if (!res.ok) throw new Error("Hello, error");
 
         const data = await res.json();
+        console.log(data);
         if (data.Response === "False") throw new Error("Movie not found");
         setMovies(data.Search);
       } catch (err) {
@@ -98,20 +107,13 @@ export default function App() {
         setIsLoading(false);
       }
     }
+    if (query.length < 3) {
+      setMovies([]);
+      setError("");
+      return;
+    }
     fetchMovies();
-  }, []);
-
-  // useEffect(function () {
-  //   async function fetchMovies() {
-  //     const res = await fetch(
-  //       `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-  //     );
-  //     const data = await res.json();
-  //     setMovies(data.Search);
-  //     console.log(data.Search);
-  //   }
-  //   fetchMovies();
-  // }, []);
+  }, [query]);
 
   return (
     <>
